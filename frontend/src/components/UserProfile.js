@@ -6,49 +6,49 @@ import { useParams } from "react-router-dom";
 export default function UserProfie() {
   var picLink = "https://cdn-icons-png.flaticon.com/128/3177/3177440.png";
   const { userid } = useParams();
-  // const [isFollow, setIsFollow] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
   const [user, setUser] = useState("");
   const [posts, setPosts] = useState([]);
 
   // to follow user
-  // const followUser = (userId) => {
-  //   fetch("http://localhost:5000/follow", {
-  //     method: "put",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: "Bearer " + localStorage.getItem("jwt"),
-  //     },
-  //     body: JSON.stringify({
-  //       followId: userId,
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setIsFollow(true);
-  //     });
-  // };
+  const followUser = (userId) => {
+    fetch("http://localhost:5000/follow", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        followId: userId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setIsFollow(true);
+      });
+  };
 
   // to unfollow user
-  // const unfollowUser = (userId) => {
-  //   fetch("http://localhost:5000/unfollow", {
-  //     method: "put",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: "Bearer " + localStorage.getItem("jwt"),
-  //     },
-  //     body: JSON.stringify({
-  //       followId: userId,
-  //     }),
-  //   })
-  //     .then((res) => {
-  //       res.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //       setIsFollow(false);
-  //     });
-  // };
+  const unfollowUser = (userId) => {
+    fetch("http://localhost:5000/unfollow", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        followId: userId,
+      }),
+    })
+      .then((res) => {
+        res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setIsFollow(false);
+      });
+  };
 
   useEffect(() => {
     fetch(`http://localhost:5000/user/${userid}`, {
@@ -61,15 +61,15 @@ export default function UserProfie() {
         console.log(result);
         setUser(result.user);
         setPosts(result.posts);
-        // if (
-        //   result.user.followers.includes(
-        //     JSON.parse(localStorage.getItem("user"))._id
-        //   )
-        // ) {
-        //   setIsFollow(true);
-        // }
+        if (
+          result.user.followers.includes(
+            JSON.parse(localStorage.getItem("user"))._id
+          )
+        ) {
+          setIsFollow(true);
+        }
       });
-  }, []);
+  }, [isFollow]);
 
   return (
     <div className="profile">
@@ -89,8 +89,7 @@ export default function UserProfie() {
             }}
           >
             <h1>{user.name}</h1>
-            {/* <h1>Rahul</h1> */}
-            {/* <button
+            <button
               className="followBtn"
               onClick={() => {
                 if (isFollow) {
@@ -101,7 +100,7 @@ export default function UserProfie() {
               }}
             >
               {isFollow ? "Unfollow" : "Follow"}
-            </button> */}
+            </button>
           </div>
           <div className="profile-info" style={{ display: "flex" }}>
             <p>{posts.length} posts</p>

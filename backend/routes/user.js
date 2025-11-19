@@ -24,6 +24,50 @@ router.get("/user/:id", async (req, res) => {
     return res.status(500).json({ error: "Something went wrong" });
   }
 });
+
+// to follow user
+router.put("/follow", requireLogin, async (req, res) => {
+  try {
+    const updatedUser = await USER.findByIdAndUpdate(
+      req.body.followId,
+      { $push: { followers: req.user._id } },
+      { new: true }
+    );
+
+    await USER.findByIdAndUpdate(
+      req.user._id,
+      { $push: { following: req.body.followId } },
+      { new: true }
+    );
+
+    return res.json(updatedUser);
+
+  } catch (err) {
+    return res.status(422).json({ error: err.message });
+  }
+});
+
+// to unfollow user
+router.put("/unfollow", requireLogin, async (req, res) => {
+  try {
+    const updatedUser = await USER.findByIdAndUpdate(
+      req.body.followId,
+      { $pull: { followers: req.user._id } },
+      { new: true }
+    );
+
+    await USER.findByIdAndUpdate(
+      req.user._id,
+      { $pull: { following: req.body.followId } },
+      { new: true }
+    );
+
+    return res.json(updatedUser);
+
+  } catch (err) {
+    return res.status(422).json({ error: err.message });
+  }
+});
  
 
 module.exports = router;
