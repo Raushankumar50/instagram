@@ -35,7 +35,7 @@ router.post("/createPost",requireLogin, (req, res) => {
 router.get("/myposts", requireLogin, (req, res) => {
     POST.find({ postedBy: req.user._id })
         .populate("postedBy", "_id name")
-        // .populate("comments.postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
         // .sort("-createdAt")
         .then(myposts => {
             res.json(myposts)
@@ -151,5 +151,18 @@ router.delete("/deletePost/:postId", requireLogin, async (req, res) => {
     return res.status(500).json({ error: "Something went wrong" });
   }
 });
+
+// To show following post
+router.get("/myfollowingpost", requireLogin, (req, res) => {
+  POST.find({ postedBy: { $in: req.user.following } })
+    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
+    .then(posts => {
+      res.json(posts)
+    })
+    .catch(err => { console.log(err) 
+
+    })
+})
 
 module.exports = router

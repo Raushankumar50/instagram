@@ -18,8 +18,11 @@ const usesSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-    followers: [{ type: ObjectId, ref: "USER" }],
-    following: [{ type: ObjectId, ref: "USER" }]
+  Photo: {
+    type: String,
+  },
+  followers: [{ type: ObjectId, ref: "USER" }],
+  following: [{ type: ObjectId, ref: "USER" }]
 })
 
 mongoose.model("USER", usesSchema)

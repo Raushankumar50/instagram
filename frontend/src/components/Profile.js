@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import './Profile.css'
 import PostDetail from './PostDetail';
+import ProfilePic from "./ProfilePic";
+
 
 const Profile = () => {
   const [pic, setPic] = useState([])
   const [show, setShow] = useState(false)
   const [posts, setPosts] = useState([])
+  const [changePic, setChangePic] = useState(false)
+
 
   const toggleDetails = (post) => {
     if (show) {
@@ -15,6 +19,14 @@ const Profile = () => {
       setPosts(post);
     }
   };
+
+  const changeprofile = () => {
+    if (changePic) {
+      setChangePic(false)
+    } else {
+      setChangePic(true)
+    }
+  }
 
   useEffect(() => {
     fetch("http://localhost:5000/myposts", {
@@ -38,7 +50,9 @@ const Profile = () => {
       {/* Profile frame */}
       <div className='profile-frame'>
         <div className='profile-pic'>
-          <img src='https://plus.unsplash.com/premium_photo-1678197937465-bdbc4ed95815?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' alt=''/>
+          <img 
+            onClick={changeprofile}
+            src='https://plus.unsplash.com/premium_photo-1678197937465-bdbc4ed95815?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' alt=''/>
         </div>
         {/* profile-data */}
         <div className='profile-data'>
@@ -70,6 +84,10 @@ const Profile = () => {
       </div>
       {show &&
         <PostDetail item={posts} toggleDetails={toggleDetails} />
+      }
+      {
+        changePic &&
+        <ProfilePic changeprofile={changeprofile} />
       }
     </div>
   )
