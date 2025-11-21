@@ -77,7 +77,7 @@ export default function UserProfie() {
       <div className="profile-frame">
         {/* profile-pic */}
         <div className="profile-pic">
-          <img src={ picLink} alt="" />
+          <img src={user.Photo? user.Photo : picLink} alt='' />
         </div>
         {/* profile-data */}
         <div className="pofile-data">

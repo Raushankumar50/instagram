@@ -5,9 +5,11 @@ import ProfilePic from "./ProfilePic";
 
 
 const Profile = () => {
+  var picLink = "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
   const [pic, setPic] = useState([])
   const [show, setShow] = useState(false)
   const [posts, setPosts] = useState([])
+  const [user, setUser] = useState([])
   const [changePic, setChangePic] = useState(false)
 
 
@@ -29,7 +31,7 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    fetch("http://localhost:5000/myposts", {
+    fetch(`http://localhost:5000/user/${JSON.parse(localStorage.getItem("user"))._id}`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
@@ -39,8 +41,8 @@ const Profile = () => {
         setPic(result)
         console.log(pic)
         // console.log(result)
-        // setPic(result.post);
-        // setUser(result.user)
+        setPic(result.posts);
+        setUser(result.user)
         // console.log(pic);
       });
   }, []);
@@ -52,15 +54,15 @@ const Profile = () => {
         <div className='profile-pic'>
           <img 
             onClick={changeprofile}
-            src='https://plus.unsplash.com/premium_photo-1678197937465-bdbc4ed95815?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' alt=''/>
+            src={user.Photo? user.Photo : picLink} alt=''/>
         </div>
         {/* profile-data */}
         <div className='profile-data'>
           <h1>{JSON.parse(localStorage.getItem("user")).name}</h1>
           <div className='profile-info' style={{display: "flex"}}>
-            <p>40 posts</p>
-            <p>40 followers</p>
-            <p>40 following</p>
+            <p>{pic ? pic.length : "0"} posts</p>
+            <p>{user.followers ? user.followers.length : "0"} followers</p>
+            <p>{user.following ? user.following.length : "0"} following</p>
           </div>
         </div>
       </div>

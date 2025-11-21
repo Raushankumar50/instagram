@@ -68,6 +68,26 @@ router.put("/unfollow", requireLogin, async (req, res) => {
     return res.status(422).json({ error: err.message });
   }
 });
+
+router.put("/uploadProfilePic", requireLogin, async (req, res) => {
+    try {
+      const result = await USER.findByIdAndUpdate(
+        req.user._id,
+        { $set: { Photo: req.body.pic } },
+        { new: true }
+      );
+
+      if (!result) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json(result);
+
+    } catch (err) {
+        return res.status(422).json({ error: err.message });
+    }
+});
+
  
 
 module.exports = router;
