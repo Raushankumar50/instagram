@@ -1,10 +1,9 @@
 import React,{useEffect, useState} from 'react'
-import "./Home.css"
+import "../css/Home.css"
 import { useNavigate } from 'react-router-dom'
 import { toast } from "react-toastify";
 import { Link } from 'react-router-dom';
-const Home = () => {
-  var picLink = "https://cdn-icons-png.flaticon.com/128/3177/3177440.png";
+const MyFollowingPost = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([])
   const [comment, setComment] = useState("")
@@ -12,7 +11,7 @@ const Home = () => {
   const [item, setItem] = useState([]);
 
   // Toast functions
-  // const notifyA = (msg) => toast.error(msg);
+  const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
 
 
@@ -23,7 +22,7 @@ const Home = () => {
     }
 
     // Fetching all posts
-    fetch("http://localhost:5000/allposts", {
+    fetch("http://localhost:5000/myfollowingpost", {
       headers: {
         "Authorization": "Bearer " + localStorage.getItem("jwt")
       },
@@ -109,7 +108,7 @@ const Home = () => {
       .then((res) => res.json())
       .then((result) => {
         const newData = data.map((posts) => {
-          if (posts._id === result._id) {
+          if (posts._id == result._id) {
             return result;
           } else {
             return posts;
@@ -132,7 +131,7 @@ const Home = () => {
             <div className='card-header'>
               <div className='card-pic'>
                 <img 
-                  src={posts.postedBy.Photo? posts.postedBy.Photo : picLink} alt='' />
+                  src='https://plus.unsplash.com/premium_photo-1678197937465-bdbc4ed95815?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' alt='' />
               </div>
               <h5>
                 <Link to={`/profile/${posts.postedBy?._id}`}>
@@ -284,4 +283,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default MyFollowingPost;

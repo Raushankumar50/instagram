@@ -30,6 +30,7 @@ router.post("/createPost",requireLogin, (req, res) => {
   })
   post.save().then((result)=>{
     return res.json({ post: result})
+    // return res.json({ result})
   }).catch(err => console.log(err))
   
 })

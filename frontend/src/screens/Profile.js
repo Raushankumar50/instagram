@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import './Profile.css'
-import PostDetail from './PostDetail';
-import ProfilePic from "./ProfilePic";
+import '../css/Profile.css'
+import PostDetail from '../components/PostDetail';
+import ProfilePic from "../components/ProfilePic";
 
 
 const Profile = () => {
@@ -96,3 +96,4 @@ const Profile = () => {
 }
 
 export default Profile
+
